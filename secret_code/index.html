@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Code Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            font-size: 50px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            width: 80%;
+            font-size: 50px;
+            background-color: aquamarine;
+        }
+        #output {
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Secret Code Converter</h2>
+    <input type="text" id="message" placeholder="Enter your message">
+    <button onclick="encodeMessage()">Encode</button>
+    <button onclick="decodeMessage()">Decode</button>
+    <p id="output"></p>
+
+    <script>
+        async function encodeMessage() {
+            const message = document.getElementById("message").value;
+            const response = await fetch("http://127.0.0.1:5000/encode", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message })
+            });
+            const data = await response.json();
+            document.getElementById("output").innerText = "Encoded: " + data.encoded;
+        }
+
+        async function decodeMessage() {
+            const message = document.getElementById("message").value;
+            const response = await fetch("http://127.0.0.1:5000/decode", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message })
+            });
+            const data = await response.json();
+            document.getElementById("output").innerText = "Decoded: " + data.decoded;
+        }
+    </script>
+</body>
+</html>
